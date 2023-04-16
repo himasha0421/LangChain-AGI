@@ -57,7 +57,9 @@ class AgentExecutor :
             for e in dir(instance):
                 if e.startswith('inference'):
                     func = getattr(instance, e)
-                    self.tools.append(Tool(name=func.name, description=func.description, func=func))
+                    self.tools.append(Tool(name=func.name, 
+                                           description=func.description, 
+                                           func=func))
 
         
         return self.tools

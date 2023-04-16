@@ -12,7 +12,7 @@ class TaskPrioritizationChain(LLMChain):
             "You are an task prioritization AI tasked with cleaning the formatting of and reprioritizing"
             " the following tasks: {task_names}."
             " Consider the ultimate objective of your team: {objective}."
-            " Do not remove any tasks. Return the result as a numbered list, like:"
+            " Do not remove any tasks. Remove only if there are reduandant tasks. Return the result as a numbered list, like:"
             " #. First task"
             " #. Second task"
             " Start the task list with number {next_task_id}."
