@@ -15,7 +15,8 @@ class TaskPrioritizationChain(LLMChain):
             " Do not remove any tasks. Remove only if there are reduandant tasks. Return the result as a numbered list, like:"
             " #. First task"
             " #. Second task"
-            " Start the task list with number {next_task_id}."
+            " keep the task list to 5 tasks strictly"
+            " Start the task numbering from {next_task_id}."
         )
         prompt = PromptTemplate(
             template=task_prioritization_template,

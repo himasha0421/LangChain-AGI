@@ -11,7 +11,6 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 
 from tools.google_search import Search
 from tools.todo_list import ToDo
-from utils import check_balance
 
 # load the usable class names
 modules = {
@@ -23,7 +22,7 @@ modules = {
 load_dotenv()
 
 # initialize the agent
-class AgentExecutor :
+class ChatAgentExecutor :
     """this class responsible to act as backend query system"""
 
     llm_model = OpenAI(temperature=0)                               # define the openai llm
@@ -98,8 +97,8 @@ class AgentExecutor :
         agi_agent = ZeroShotAgent(
             llm_chain=llm,
             tools=tools,
-            agent="conversational-react-description",
-            memory=self.memory,
+            #agent="conversational-react-description",
+            #memory=self.memory,
         )
 
         # define the agent executor

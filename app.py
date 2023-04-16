@@ -1,14 +1,11 @@
 import os
-
-os.environ["OPENAI_API_KEY"] = ""
-os.environ["SERPAPI_API_KEY"] = ""
-
-import os
 from collections import deque
 from typing import Any, Dict, List, Optional
 
 import faiss
+from dotenv import load_dotenv
 from langchain import LLMChain, OpenAI, PromptTemplate
+from langchain.agents import AgentExecutor
 from langchain.chains.base import Chain
 from langchain.docstore import InMemoryDocstore
 from langchain.embeddings import OpenAIEmbeddings
@@ -17,7 +14,7 @@ from langchain.vectorstores import FAISS
 from langchain.vectorstores.base import VectorStore
 from pydantic import BaseModel, Field
 
-from chains.execution_agent import AgentExecutor
+from chains.execution_agent import ChatAgentExecutor
 from chains.task_creation import TaskCreationChain
 from chains.task_prioritize import TaskPrioritizationChain
 from utils import execute_task, get_next_task, prioritize_tasks
@@ -103,6 +100,10 @@ class BabyAGI(Chain, BaseModel):
                 new_tasks = get_next_task(
                     self.task_creation_chain, result, task["task_name"], [t["task_name"] for t in self.task_list], objective
                 )
+
+                # check the termination state
+
+
                 for new_task in new_tasks:
                     self.task_id_counter += 1
                     new_task.update({"task_id": self.task_id_counter})
@@ -134,7 +135,7 @@ class BabyAGI(Chain, BaseModel):
             llm, verbose=verbose
         )
         # init the agent executor based on the integated tools
-        agent_executor = AgentExecutor().init_agent()
+        agent_executor = ChatAgentExecutor().init_agent()
 
         return cls(
             task_creation_chain=task_creation_chain,
@@ -147,14 +148,17 @@ class BabyAGI(Chain, BaseModel):
 
 if __name__== '__main__':
 
-    OBJECTIVE = "Find the of a Yubikey 5c on Amazon and give me the URL"
+    # load the enviroment variables from the .env file
+    load_dotenv()
+
+    OBJECTIVE = "Find a webiste to purchase iphone 13 pro ?"
     # define the openai llm based on text-davinci-003
     llm = OpenAI(temperature=0)
 
     # Logging of LLMChains
     verbose=True
     # If None, will keep on going forever
-    max_iterations: Optional[int] = 7
+    max_iterations: Optional[int] = 4
 
     baby_agi = BabyAGI.from_llm(
         llm=llm,

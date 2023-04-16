@@ -16,8 +16,9 @@ class TaskCreationChain(LLMChain):
             " These are incomplete tasks: {incomplete_tasks}."
             " Based on the result, create new tasks to be completed"
             " by the AI system that do not overlap with incomplete tasks.Keep the task list to minimum set of tasks to complete the objective."
-            " keep the task list to 5 task at a time , follow this command strictly"
-            " Return the tasks as an array."
+            " keep the task list to 5 tasks strictly"
+            " if the objective accomplished return DONE and final task result."
+            " if not Return the tasks as an array."
         )
         prompt = PromptTemplate(
             template=task_creation_template,
